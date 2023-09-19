@@ -1,10 +1,12 @@
-// import { configureStore, createAction, createReducer } from '@reduxjs/toolkit';
-// import { nanoid } from 'nanoid';
 import { configureStore } from '@reduxjs/toolkit';
 import { contactsReducer } from './contactsSlice';
+import { filterReducer } from './filterSlice';
 
 export const store = configureStore({
-  reducer: contactsReducer,
+  reducer: {
+    contacts: contactsReducer,
+    filter: filterReducer,
+  },
 });
 
 // const rootReducer = (state = initialState, action) => {

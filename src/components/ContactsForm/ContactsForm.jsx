@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -6,8 +8,6 @@ import {
   Label,
   ButtonAddContact,
 } from './ContactsForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -26,11 +26,11 @@ const initialValues = { name: '', number: '' };
 
 export const ContactsForm = () => {
   const dispatch = useDispatch();
-  const allContatcs = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts);
 
   const onformSubmit = value => {
-    const nameInContacts = allContatcs.find(
-      contact => contact.name.toLowerCase() === value.name.toLowerCase()
+    const nameInContacts = contacts.find(
+      ({ name }) => name.toLowerCase() === value.name.toLowerCase()
     );
     //перевірка існуючого кантакта в телефоній книжці.
     if (nameInContacts) {
@@ -38,8 +38,7 @@ export const ContactsForm = () => {
       return;
     }
     // // створення нового контакта
-    const newContact = () => dispatch(addContact(value));
-    newContact();
+    dispatch(addContact(value));
   };
 
   const handleSubmit = (value, { resetForm }) => {
