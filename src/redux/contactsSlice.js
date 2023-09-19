@@ -15,17 +15,13 @@ export const getInitialContacts = () => {
   ];
 };
 
-const updateLocalStorage = contacts => {
-  localStorage.setItem('contacts', JSON.stringify(contacts));
-};
-
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: getInitialContacts(),
   reducers: {
     addContact: {
       reducer(state, action) {
-        state.push(action.payload);
+        state.unshift(action.payload);
       },
       prepare(value) {
         return {
@@ -37,7 +33,6 @@ const contactsSlice = createSlice({
       const updatedDeleteContact = state.filter(
         contact => contact.id !== action.payload
       );
-      updateLocalStorage(updatedDeleteContact);
       return updatedDeleteContact;
     },
   },
@@ -45,68 +40,3 @@ const contactsSlice = createSlice({
 
 export const { addContact, deleteContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
-
-// export const addContact = createAction(
-//   'contacts/addContact',
-//   ({ name, number }) => {
-//     return {
-//       payload: {
-//         id: nanoid(),
-//         name,
-//         number,
-//       },
-//     };
-//   }
-// );
-// export const deleteContact = createAction('contacts/deleteContact');
-// export const foundContacts = createAction('filter/foundContacts');
-
-// export const contactsReducer = createReducer(initialState, builder =>
-//   builder
-//     .addCase(addContact, (state, action) => {
-//       const updatedContactsAdd = [action.payload, ...state.contacts];
-//       updateLocalStorage(updatedContactsAdd);
-//       return {
-//         ...state,
-//         contacts: updatedContactsAdd,
-//       };
-//     })
-//     .addCase(deleteContact, (state, action) => {
-//       const updetedDeleteContact = state.contacts.filter(
-//         contact => contact.id !== action.payload
-//       );
-//       updateLocalStorage(updetedDeleteContact);
-//       return {
-//         ...state,
-//         contacts: updetedDeleteContact,
-//       };
-//     })
-//     .addCase(foundContacts, (state, action) => {
-//       if (typeof action.payload === 'string') {
-//         // Перевірка, чи action.payload є рядком
-//         if (action.payload === '') {
-//           // Якщо поле пошуку порожнє, повертаємо початковий список контактів
-//           return {
-//             ...state,
-//             contacts: getInitialContacts(),
-//             filter: '',
-//           };
-//         } else {
-//           // Якщо поле пошуку не порожнє, фільтруємо контакти
-//           return {
-//             ...state,
-//             contacts: state.contacts.filter(contact =>
-//               contact.name.toLowerCase().includes(action.payload.toLowerCase())
-//             ),
-//             filter: action.payload,
-//           };
-//         }
-//       } else {
-//         // Якщо action.payload не є '', просто оновлюємо filter
-//         return {
-//           ...state,
-//           filter: action.payload,
-//         };
-//       }
-//     })
-// );

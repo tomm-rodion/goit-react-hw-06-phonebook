@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export const ContactsFilter = () => {
   const filter = useSelector(state => state.filter);
-  console.log('useSelector', filter);
   const dispatch = useDispatch();
 
   const onChange = e => {
